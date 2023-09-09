@@ -1,8 +1,11 @@
-runtime: python38
-entrypoint: gunicorn -b :$PORT main:app
+runtime: python38  # Usa la versión de Python adecuada para tu aplicación Flask
+entrypoint: gunicorn -b :$PORT main:app  # Si también tienes Flask en tu proyecto
 
 handlers:
 - url: /static
-  static_dir: build/static
+  static_dir: build/static  # Ruta a la carpeta de archivos estáticos de React
+- url: /(.*\.(json|js|css|png|jpg|ico))  # Coincide con archivos JSON, JS, CSS y más
+  static_files: build/\1  # Ruta relativa a la carpeta 'build' de tu proyecto React
+  upload: build/(.*\.(json|js|css|png|jpg|ico))  # Añade esta línea para subir los archivos
 - url: /.*
   script: auto
